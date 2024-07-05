@@ -1,0 +1,50 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'The Orginal code for Hide & Unhide Shapes/Picture
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+' This variable will store the name of the last hidden shape
+Dim LastHiddenShape As String
+
+
+' This macro will hide the selected shape or picture
+Sub HideShape()
+    Dim shp As Shape
+    On Error Resume Next
+    Set shp = ActiveSheet.Shapes(Application.Selection.Name)
+    On Error GoTo 0
+    If Not shp Is Nothing Then
+        ' If a shape is selected, hide it and store its name
+        shp.Visible = msoFalse
+        LastHiddenShape = shp.Name
+    ElseIf LastHiddenShape <> "" Then
+        ' If no shape is selected, unhide the last hidden shape
+        ActiveSheet.Shapes(LastHiddenShape).Visible = msoTrue
+        LastHiddenShape = ""
+    Else
+        MsgBox "Please select a shape or picture to hide.", vbInformation
+    End If
+    Set shp = Nothing
+End Sub
+
+
+' This macro will unhide all shapes or pictures in the active sheet
+Sub UnhideAllShapes()
+    Dim shp As Shape
+    Dim hasHiddenShape As Boolean
+    hasHiddenShape = False
+    For Each shp In ActiveSheet.Shapes
+        If shp.Visible = msoFalse Then
+            shp.Visible = msoTrue
+            hasHiddenShape = True
+        End If
+    Next shp
+    If Not hasHiddenShape Then
+        MsgBox "There are no hidden shapes or pictures.", vbInformation
+    End If
+End Sub
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'©Surjodipta Mandal, 11/5/2024
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
