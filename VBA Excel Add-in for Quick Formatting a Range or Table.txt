@@ -1,0 +1,66 @@
+'_________________________________________________________
+'        Quick Formatting a range/ Table
+'_________________________________________________________
+
+Sub QuickFormatSelectedRange()
+    Dim Answer As VbMsgBoxResult
+    Dim HeaderAnswer As VbMsgBoxResult
+    Dim rng As Range
+    Dim cell As Range
+
+    ' Yes/No Message Box for Confirmation
+    Answer = MsgBox("Are you sure to apply Quick Formatting?", vbQuestion + vbYesNo, "Microsoft Excel - Run Macro")
+    If Answer = vbYes Then
+
+        ' Get the selected range
+        Set rng = Selection
+
+        ' Check if the selection is empty or if only one row is selected
+        If rng Is Nothing Then
+            MsgBox "Please select a range to format."
+            Exit Sub
+        ElseIf rng.Rows.Count = 1 Then
+            MsgBox "Please select a range that spans multiple rows to format.", vbExclamation
+            Exit Sub
+        End If
+
+        ' Ask if the first row is a header
+        HeaderAnswer = MsgBox("Is the first row a header?", vbQuestion + vbYesNo, "Microsoft Excel - Header Confirmation")
+
+        ' Optimize performance
+        Application.ScreenUpdating = False
+        Application.Calculation = xlCalculationManual
+        Application.EnableEvents = False
+
+        ' Apply header formatting if the first row is a header
+        If HeaderAnswer = vbYes Then
+            With rng.Rows(1)
+                .Font.Name = "Aptos"
+                .Font.Bold = True
+                .Font.Size = 13
+                .Interior.Color = RGB(0, 102, 153) ' Dark teal color for the header
+                .Font.Color = RGB(255, 255, 255) ' White font color for the header
+                .HorizontalAlignment = xlCenter
+                .VerticalAlignment = xlCenter
+            End With
+        End If
+
+        ' Apply border and font to each cell in the selected range
+        For Each cell In rng
+            With cell.Borders
+                .LineStyle = xlContinuous
+                .Color = RGB(21, 96, 130) ' Dark Blue color for the borders
+                .TintAndShade = 0
+                .Weight = xlThin
+            End With
+            cell.Font.Name = "Aptos"
+        Next cell
+
+        ' Restore settings
+        Application.ScreenUpdating = True
+        Application.Calculation = xlCalculationAutomatic
+        Application.EnableEvents = True
+
+        MsgBox "Formatting applied successfully!"
+    End If
+End Sub
