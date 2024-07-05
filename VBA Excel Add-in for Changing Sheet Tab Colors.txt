@@ -1,0 +1,67 @@
+'_______________________________________
+'Orginal code for Tab Colors Add-ins
+'_______________________________________
+
+'_______________________________________
+'Modified code for Tab Colors Add-ins
+'_______________________________________
+
+Sub ChangeSheetTabColor()
+    
+    'Yes/No Message Box
+    Dim Answer As Integer
+    Answer = MsgBox("Are you sure to run the macro to change Tab Color?", vbQuestion + vbYesNo, "Microsoft Excel - Run Macro")
+    
+    If Answer = vbYes Then
+    
+        Dim colorIndex As Integer
+        Dim sheetIndex As Integer
+        Dim colors As Variant
+    
+        ' Define an array of color codes
+        colors = Array( _
+"#FF0000", "#0000FF", "#FFFF99", "#33FF57", "#3357FF", "#1E90FF", "#FF4343", "#33FFA1", "#4682B4", "#A133FF", "#87CEEB", _
+"#FFFF33", "#57FF33", "#5733FF", "#33A1FF", "#33FFA1", "#FF4343", "#FFFF33", "#57FF33", "#5733FF", _
+"#FF4343", "#33FFA1", "#33A1FF", "#FFB533", "#33FFB5", "#3366FF", "#FF33E0", "#33FFE0", "#33CC33", _
+"#FFB533", "#B5FF33", "#0000FF", "#FF33E0", "#33FFE0", "#33A1FF", "#FFB533", "#0000FF", "#B533FF", _
+"#0000D2", "#33FFE0", "#33A1FF", "#0DFF00", "#33FF83", "#8333FF", "#FF3384", "#33FF84", "#8433FF", _
+"#FF8333", "#84FF33", "#8333FF", "#FF3384", "#33FF84", "#8433FF", "#FF8333", "#84FF33", "#0000FF", _
+"#FF3384", "#33FF84", "#8433FF", "#FFDA33", "#33FFDA", "#DA33FF", "#FF33BA", "#33FFBA", "#BA33FF", _
+"#FFDA33", "#DAFF33", "#DA33FF", "#FF33BA", "#33FFBA", "#BA33FF", "#FFDA33", "#DAFF33", "#DA33FF", _
+"#FF33BA", "#33FFBA", "#BA33FF", "#FF6633", "#33FF66", "#6633FF", "#FF3394", "#33FF94", "#9433FF", _
+"#FF6633", "#66FF33", "#6633FF", "#FF3394", "#33FF94", "#9433FF", "#FF6633", "#66FF33", "#6633FF", _
+"#FF3394", "#33FF94", "#9433FF", "#FFCC33", "#33FFCC", "#CC33FF", "#FF33D0", "#33FFD0", "#D033FF", _
+"#FFCC33", "#CCFF33", "#CC33FF", "#FF33D0", "#33FFD0", "#D033FF", "#FFCC33", "#CCFF33", "#CC33FF", _
+"#FF33D0", "#33FFD0", "#D033FF", "#FF9933", "#33FF99", "#9933FF", "#FF33C8", "#33FFC8", "#C833FF", _
+"#FF9933", "#99FF33", "#9933FF", "#FF33C8", "#33FFC8", "#C833FF", "#FF9933", "#99FF33", "#9933FF", _
+"#FF33C8", "#33FFC8", "#C833FF", "#FFAF33", "#33FFAF", "#AF33FF", "#FF33F0", "#33FFF0", "#F033FF", _
+"#FFAF33", "#AFFF33", "#AF33FF", "#FF33F0", "#33FFF0", "#F033FF", "#FFAF33", "#AFFF33", "#AF33FF", _
+"#FF33F0", "#33FFF0", "#F033FF", "#FF7733", "#33FF77", "#7733FF", "#FF33B8", "#33FFB8", "#B833FF", _
+"#FF7733", "#77FF33", "#7733FF", "#FF33B8", "#33FFB8", "#B833FF", "#FF7733", "#77FF33", "#7733FF", _
+"#FF33B8", "#33FFB8", "#B833FF", "#FFBB33", "#33FFBB", "#BB33FF", "#FF33C0", "#33FFC0", "#C033FF", _
+"#FFBB33", "#BBFF33", "#BB33FF", "#FF33C0", "#33FFC0", "#C033FF", "#FFBB33", "#BBFF33", "#BB33FF", _
+"#FF33C0", "#33FFC0", "#C033FF")
+
+
+      ' Loop through each sheet and assign a color
+        For sheetIndex = 1 To Sheets.Count
+            ' Calculate the color index
+            colorIndex = (sheetIndex - 1) Mod UBound(colors) + 1
+            Sheets(sheetIndex).Tab.Color = RGB(ColorCodeToRGB(colors(colorIndex - 1))(0), _
+                                               ColorCodeToRGB(colors(colorIndex - 1))(1), _
+                                               ColorCodeToRGB(colors(colorIndex - 1))(2))
+        Next sheetIndex
+    End If
+End Sub
+    
+Function ColorCodeToRGB(ByVal colorCode As String) As Variant
+    Dim r As Integer, g As Integer, b As Integer
+    r = CLng("&H" & Mid(colorCode, 2, 2))
+    g = CLng("&H" & Mid(colorCode, 4, 2))
+    b = CLng("&H" & Mid(colorCode, 6, 2))
+    ColorCodeToRGB = Array(r, g, b)
+End Function
+
+'________________________________
+'©Surjodipta Mandal, 4/5/2024
+'________________________________
